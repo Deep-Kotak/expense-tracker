@@ -1,16 +1,19 @@
-"""
-ExpenseTracker - Main application file
-"""
+from database import connect_db
 
-from database import Database
+def view_expenses():
+    conn = connect_db()
+    cursor = conn.cursor()
 
+    cursor.execute("SELECT * FROM expenses")
+    expenses = cursor.fetchall()
 
-def main():
-    """Main entry point for the ExpenseTracker application"""
-    db = Database()
-    print("Welcome to ExpenseTracker!")
-    # Application logic will go here
+    print("\n===== EXPENSE LIST =====\n")
 
+    for expense in expenses:
+        print(
+            f"ID: {expense[0]} | Amount: ₹{expense[1]} | Category: {expense[2]} | Date: {expense[3]}"
+        )
 
-if __name__ == "__main__":
-    main()
+    conn.close()
+
+view_expenses()
