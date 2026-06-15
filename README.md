@@ -101,7 +101,7 @@ Export all expense records into a CSV file for reporting and analysis.
 Clone the repository:
 
 ```bash
-git clone https://github.com/your-username/expense-tracker.git
+git clone https://github.com/Deep-Kotak/expense-tracker.git
 ```
 
 Move into the project directory:
@@ -150,7 +150,7 @@ This project helped me learn:
 
 Computer Science Student | Aspiring Full Stack Developer
 
-GitHub: https://github.com/your-username
+GitHub: https://github.com/Deep-Kotak
 
 ---
 
