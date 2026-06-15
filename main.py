@@ -16,4 +16,26 @@ def view_expenses():
 
     conn.close()
 
+from database import connect_db
+
+def delete_expense():
+    expense_id = int(input("Enter Expense ID to Delete: "))
+
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "DELETE FROM expenses WHERE id = ?",
+        (expense_id,)
+    )
+
+    conn.commit()
+
+    if cursor.rowcount > 0:
+        print("Expense Deleted Successfully!")
+    else:
+        print("Expense Not Found!")
+
+    conn.close()
+
 view_expenses()
