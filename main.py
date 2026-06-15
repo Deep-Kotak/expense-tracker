@@ -3,9 +3,24 @@ import csv
 
 
 def add_expense():
-    amount = float(input("Enter Amount: "))
-    category = input("Enter Category: ")
-    date = input("Enter Date (YYYY-MM-DD): ")
+
+    try:
+        amount = float(input("Enter Amount: "))
+    except ValueError:
+        print("Invalid Amount!")
+        return
+
+    category = input("Enter Category: ").strip()
+
+    if category == "":
+        print("Category cannot be empty!")
+        return
+
+    date = input("Enter Date (YYYY-MM-DD): ").strip()
+
+    if date == "":
+        print("Date cannot be empty!")
+        return
 
     conn = connect_db()
     cursor = conn.cursor()
@@ -23,6 +38,7 @@ def add_expense():
 
 
 def view_expenses():
+
     conn = connect_db()
     cursor = conn.cursor()
 
@@ -33,16 +49,21 @@ def view_expenses():
 
     if len(expenses) == 0:
         print("No Expenses Found!")
+    else:
+        print("-" * 60)
 
-    for expense in expenses:
-        print(
-            f"ID: {expense[0]} | Amount: ₹{expense[1]} | Category: {expense[2]} | Date: {expense[3]}"
-        )
+        for expense in expenses:
+            print(
+                f"ID: {expense[0]} | Amount: ₹{expense[1]} | Category: {expense[2]} | Date: {expense[3]}"
+            )
+
+        print("-" * 60)
 
     conn.close()
 
 
 def update_expense():
+
     expense_id = int(input("Enter Expense ID to Update: "))
 
     amount = float(input("Enter New Amount: "))
@@ -69,6 +90,7 @@ def update_expense():
 
 
 def delete_expense():
+
     expense_id = int(input("Enter Expense ID to Delete: "))
 
     conn = connect_db()
@@ -95,6 +117,7 @@ def expense_summary():
     cursor = conn.cursor()
 
     cursor.execute("SELECT SUM(amount) FROM expenses")
+
     total = cursor.fetchone()[0]
 
     if total is None:
@@ -125,6 +148,7 @@ def export_to_csv():
     cursor = conn.cursor()
 
     cursor.execute("SELECT * FROM expenses")
+
     expenses = cursor.fetchall()
 
     with open("expenses.csv", "w", newline="") as file:
