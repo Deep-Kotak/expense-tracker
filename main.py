@@ -30,6 +30,9 @@ def view_expenses():
 
     print("\n===== EXPENSE LIST =====\n")
 
+    if len(expenses) == 0:
+        print("No Expenses Found!")
+
     for expense in expenses:
         print(
             f"ID: {expense[0]} | Amount: ₹{expense[1]} | Category: {expense[2]} | Date: {expense[3]}"
@@ -85,6 +88,37 @@ def delete_expense():
     conn.close()
 
 
+def expense_summary():
+
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT SUM(amount) FROM expenses")
+
+    total = cursor.fetchone()[0]
+
+    if total is None:
+        total = 0
+
+    print("\n===== EXPENSE SUMMARY =====")
+    print(f"Total Expense: ₹{total}")
+
+    print("\nCategory Wise Summary")
+
+    cursor.execute("""
+        SELECT category, SUM(amount)
+        FROM expenses
+        GROUP BY category
+    """)
+
+    data = cursor.fetchall()
+
+    for row in data:
+        print(f"{row[0]} : ₹{row[1]}")
+
+    conn.close()
+
+
 while True:
 
     print("\n===== EXPENSE TRACKER =====")
@@ -92,7 +126,8 @@ while True:
     print("2. View Expenses")
     print("3. Update Expense")
     print("4. Delete Expense")
-    print("5. Exit")
+    print("5. Expense Summary")
+    print("6. Exit")
 
     choice = input("Enter Choice: ")
 
@@ -109,6 +144,9 @@ while True:
         delete_expense()
 
     elif choice == "5":
+        expense_summary()
+
+    elif choice == "6":
         print("Good Bye!")
         break
 
