@@ -1,4 +1,5 @@
 from database import connect_db
+import csv
 
 
 def add_expense():
@@ -94,7 +95,6 @@ def expense_summary():
     cursor = conn.cursor()
 
     cursor.execute("SELECT SUM(amount) FROM expenses")
-
     total = cursor.fetchone()[0]
 
     if total is None:
@@ -119,6 +119,32 @@ def expense_summary():
     conn.close()
 
 
+def export_to_csv():
+
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT * FROM expenses")
+    expenses = cursor.fetchall()
+
+    with open("expenses.csv", "w", newline="") as file:
+
+        writer = csv.writer(file)
+
+        writer.writerow([
+            "ID",
+            "Amount",
+            "Category",
+            "Date"
+        ])
+
+        writer.writerows(expenses)
+
+    print("Expenses Exported Successfully!")
+
+    conn.close()
+
+
 while True:
 
     print("\n===== EXPENSE TRACKER =====")
@@ -127,7 +153,8 @@ while True:
     print("3. Update Expense")
     print("4. Delete Expense")
     print("5. Expense Summary")
-    print("6. Exit")
+    print("6. Export to CSV")
+    print("7. Exit")
 
     choice = input("Enter Choice: ")
 
@@ -147,6 +174,9 @@ while True:
         expense_summary()
 
     elif choice == "6":
+        export_to_csv()
+
+    elif choice == "7":
         print("Good Bye!")
         break
 
