@@ -1,17 +1,24 @@
-# CLI Expense Tracker
+# Expense Tracker
 
-A command line application to manage personal expenses.
+A command-line expense tracking application built with Python and SQLite.
 
 ## Features
 
 - Add Expense
-- View Expense
+- View Expenses
 - Update Expense
 - Delete Expense
-- Monthly Reports
+- Expense Summary
+- Category Wise Report
 - CSV Export
 
-## Tech Stack
+## Technologies Used
 
 - Python
 - SQLite
+- CSV Module
+
+## How to Run
+
+```bash
+python main.py
